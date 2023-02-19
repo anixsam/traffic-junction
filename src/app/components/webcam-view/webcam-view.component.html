@@ -1,0 +1,11 @@
+<div class="view">
+    <webcam class="cam" *ngIf="deviceId!=='none' else camNotFound" #webcam [videoOptions]="{deviceId:deviceId}" [allowCameraSwitch]="false" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+</div>
+
+<ng-template #camNotFound>
+    <div class="camera-not-found">
+        <h1>Camera not found</h1>
+        <p>Make sure you have a camera connected and try again.</p>
+    </div> 
+</ng-template>
+

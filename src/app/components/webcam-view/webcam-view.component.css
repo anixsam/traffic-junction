@@ -1,0 +1,31 @@
+.view {
+    border: solid red;
+    display: flex;
+    max-height: 300px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+.camera-not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-color: grey;
+}
+.time {
+    font-size: 2em;
+    color: white;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+    top: 100px;
+}
+.cam {
+    border: solid green;
+}

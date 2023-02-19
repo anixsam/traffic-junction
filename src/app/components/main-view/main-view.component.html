@@ -1,0 +1,7 @@
+<div class="camera-display">
+    <div *ngFor="let cam of webcams">
+        <div class="camera">
+            <app-webcam-view [deviceId]="cam.deviceId"></app-webcam-view>
+        </div>
+    </div>
+</div>
