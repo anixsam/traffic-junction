@@ -1,6 +1,8 @@
 import { Component , Input, OnInit, ViewChild } from '@angular/core';
 import { WebcamComponent, WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
+import { ImageService } from 'src/app/shared/image.service';
+import { WebsocketService } from 'src/app/shared/websocket.service';
 
 @Component({
   selector: 'app-webcam-view',
@@ -11,15 +13,22 @@ import { Observable, Subject } from 'rxjs';
 export class WebcamViewComponent  implements OnInit {
 
   @Input() deviceId: any;
+  @Input() zone : String = "";
   @ViewChild('webcam') webcam: WebcamComponent | undefined;
 
-  public time : any;
-
+  public time : any = new Date().toLocaleString();
   private trigger: Subject<void> = new Subject<void>();
+  private countThreshold : number = 20;
+  public count : number = 0;
+
+  constructor(
+    private imageService : ImageService,
+    private wssService : WebsocketService
+  ) { }
 
 
   public checkPermission() {
-    navigator.mediaDevices.getUserMedia({ video: { height : 200} })
+    navigator.mediaDevices.getUserMedia({ video : {width:1920,height:1080}})
       .then(stream => {
         console.log('Permission granted');
       })
@@ -49,8 +58,26 @@ export class WebcamViewComponent  implements OnInit {
     return this.trigger.asObservable();
   }
 
-  public handleImage(webcamImage: WebcamImage) {
-    // console.log(webcamImage.imageAsDataUrl);
+  public async handleImage(webcamImage: WebcamImage) {
+    this.imageService.sendImage(webcamImage.imageAsDataUrl).subscribe(
+      (res) => {
+        if(res)
+          this.count = res.count;
+          if(this.count > this.countThreshold)
+            this.sendWsHighMessage()
+          else
+            this.sendWsMessage();
+          
+      }
+    );
+  }
+
+  public sendWsHighMessage() {
+    this.wssService.sendMessage(JSON.stringify({id : 'high-threshold' ,  zone : this.zone, count : this.count}));
+  }
+
+  public sendWsMessage() {
+    this.wssService.sendMessage(JSON.stringify({id : 'normal' ,  zone : this.zone, count : this.count}));
   }
 
 }

@@ -1,5 +1,13 @@
 <div class="view">
-    <webcam class="cam" *ngIf="deviceId!=='none' else camNotFound" #webcam [videoOptions]="{deviceId:deviceId}" [allowCameraSwitch]="false" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+    <div class="cam-details">
+        <p>{{time}}</p>
+        <p>{{zone}}</p>
+        <p>{{count}}</p>
+    </div>
+    <webcam #webcam *ngIf="deviceId!=='none' else camNotFound" [height]="640" [width]="640" [videoOptions]="{deviceId:deviceId}" [allowCameraSwitch]="false" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+
+    <button mat-icon-button class="floatingActionButton green" (click)="sendWsHighMessage()"><mat-icon>traffic</mat-icon></button>
+    <button mat-icon-button class="floatingActionButton red" (click)="sendWsMessage()"><mat-icon>traffic</mat-icon></button>
 </div>
 
 <ng-template #camNotFound>

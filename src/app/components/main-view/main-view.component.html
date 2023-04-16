@@ -1,7 +1,10 @@
+<h1 style="text-align: center;">Traffic Monitoring & Management</h1>
+
 <div class="camera-display">
     <div *ngFor="let cam of webcams">
         <div class="camera">
-            <app-webcam-view [deviceId]="cam.deviceId"></app-webcam-view>
+            <app-webcam-view [deviceId]="cam.deviceId" [zone]="cam.zone"></app-webcam-view>
         </div>
     </div>
+    <button class="floatingActionButton" mat-icon-button (click)="sendEmergencyMessage()"><mat-icon>warning</mat-icon></button>
 </div>
